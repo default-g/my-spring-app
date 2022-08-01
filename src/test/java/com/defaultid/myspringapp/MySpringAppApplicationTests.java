@@ -10,4 +10,10 @@ class MySpringAppApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void checkGenreGetting() {
+        Music rock = new Rock();
+        assert rock.getMusicGenreName() == "ROCK";
+    }
+
 }

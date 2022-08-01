@@ -10,13 +10,4 @@ public class MySpringAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(MySpringAppApplication.class, args);
     }
-
-    @Bean
-    public int printTestBeanName(TestBean testBean) {
-        System.out.println(testBean.getName());
-        return 1;
-    }
-
-
-
 }
