@@ -5,15 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-//@SpringBootApplication
+@SpringBootApplication
 public class Application {
 
 	public static void main(String[] args) {
 		ApplicationContext context =  new ClassPathXmlApplicationContext("user-bean-config.xml");
-		Music music = context.getBean("musicBean", Music.class);
-		MusicPlayer player = new MusicPlayer(music);
+		MusicPlayer player = context.getBean("musicPlayer", MusicPlayer.class);
 		player.playMusic();
-//		SpringApplication.run(Application.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
