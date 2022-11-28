@@ -12,9 +12,10 @@ public class Application {
 		ApplicationContext context =  new ClassPathXmlApplicationContext(
 				"user-bean-config.xml"
 		);
-		MusicPlayer player = context.getBean("musicPlayer", MusicPlayer.class);
-		player.playMusic();
-		System.out.println(player.getVolume());
+		ClassicalMusic music = context.getBean("classicalMusic", ClassicalMusic.class);
+//		MusicPlayer player = context.getBean("musicPlayer", MusicPlayer.class);
+//		player.playMusic();
+//		System.out.println(player.getVolume());
 		SpringApplication.run(Application.class, args);
 	}
 
