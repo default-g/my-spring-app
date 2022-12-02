@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.ArrayUtils;
 
@@ -11,7 +13,10 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 @Component
+@PropertySource("musicPlayer.properties")
 public class MusicPlayer {
+    @Value("${musicPlayer.name}")
+    private String name;
 
     @Autowired
     private ClassicalMusic classicalMusic;
@@ -34,7 +39,7 @@ public class MusicPlayer {
                     .getSong()
                     .get(random.nextInt() % this.classicalMusic.getSong().size());
         }
-
+        System.out.println(this.name);
         System.out.println("Now playing: * " + playedSong);
     }
 
