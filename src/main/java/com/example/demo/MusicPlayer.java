@@ -1,38 +1,23 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class MusicPlayer {
-    private List<Music> playList = new ArrayList<>();
-    private String name;
 
-    private int volume;
-    public String getName() {
-        return name;
-    }
+    private List<Music> playList;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getVolume() {
-        return this.volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
-
-    public MusicPlayer() {}
-
-    public void playMusic() {
-        System.out.println("Now playing: ");
-        for (var item : this.playList) {
-            System.out.println(" * " + item.getSong());
-        }
-    }
-    public void setPlayList(List<Music> playList) {
+    @Autowired
+    public MusicPlayer(List<Music> playList) {
         this.playList = playList;
+        this.playMusic();
     }
+    public void playMusic() {
+        System.out.println("Now playing: * " + playList.toString());
+    }
+
 }
