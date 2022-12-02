@@ -2,22 +2,40 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 
 @Component
 public class MusicPlayer {
 
-    private List<Music> playList;
+    @Autowired
+    private ClassicalMusic classicalMusic;
 
     @Autowired
-    public MusicPlayer(List<Music> playList) {
-        this.playList = playList;
-        this.playMusic();
-    }
-    public void playMusic() {
-        System.out.println("Now playing: * " + playList.toString());
+    private RockMusic rockMusic;
+
+    public void playMusic(Genre genre) {
+        List<String> songs = new ArrayList<>();
+        Random random = new Random();
+
+        String playedSong = null;
+        if (genre == Genre.ROCK) {
+            playedSong = this.rockMusic
+                    .getSong()
+                    .get(random.nextInt() % this.rockMusic.getSong().size());
+        }
+        if (genre == Genre.CLASSIC) {
+            playedSong = this.classicalMusic
+                    .getSong()
+                    .get(random.nextInt() % this.classicalMusic.getSong().size());
+        }
+
+        System.out.println("Now playing: * " + playedSong);
     }
 
 }
