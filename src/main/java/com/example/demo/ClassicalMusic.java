@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
 public class ClassicalMusic implements Music {
 
     private List<String> songs = Arrays.asList("Requiem", "Ave Maria", "Messiah");

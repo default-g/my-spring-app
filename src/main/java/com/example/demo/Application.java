@@ -13,20 +13,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 @SpringBootApplication
-@ComponentScan
 public class Application implements CommandLineRunner {
 
-	@Autowired
-	ApplicationContextProvider ApplicationContextProvider;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
+	@Autowired
+	MusicPlayer player;
+
 	@Override
 	public void run(String...args) throws Exception {
-		MusicPlayer player = this.ApplicationContextProvider.getApplicationContext().getBean("musicPlayer", MusicPlayer.class);
-		player.playMusic(Genre.ROCK);
+		player.playMusic(Genre.CLASSIC);
 	}
 
 
