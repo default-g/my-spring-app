@@ -7,7 +7,10 @@
     <label for="name">Имя: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <br />
-    <input type="submit"  value="Create!" />
+    <input type="submit"  value="Edit" />
+</form>
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+    <input type="submit" value="DELETE" />
 </form>
 </body>
 </html>
