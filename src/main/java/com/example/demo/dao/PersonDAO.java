@@ -1,6 +1,10 @@
 package com.example.demo.dao;
 
 import com.example.demo.models.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.xml.transform.Result;
@@ -10,6 +14,14 @@ import java.util.List;
 
 @Component
 public class PersonDAO {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public PersonDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private static int PEOPLE_COUNT = 0;
 
     private static final String URL = "jdbc:postgresql://localhost:5432/first_db";
@@ -33,87 +45,29 @@ public class PersonDAO {
 
 
     public List<Person> index() {
-        List<Person> people = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
-            String sql = "SELECT * FROM person";
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                var person = new Person();
-                person.setId(resultSet.getInt("id"));
-                person.setName(resultSet.getString("name"));
-                person.setAge(resultSet.getInt("age"));
-                person.setEmail(resultSet.getString("email"));
-                people.add(person);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return people;
+        return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
     }
 
 
     public Person show(int id) {
-        Person person = null;
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM person WHERE id = ?");
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
 
-            resultSet.next();
-
-            person = new Person();
-            person.setId(resultSet.getInt("id"));
-            person.setName(resultSet.getString("name"));
-            person.setAge(resultSet.getInt("age"));
-            person.setEmail(resultSet.getString("email"));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return person;
+       return jdbcTemplate.query("SELECT * FROM person WHERE id = ? LIMIT 1", new BeanPropertyRowMapper<>(Person.class), id)
+               .stream()
+               .findAny()
+               .orElse(null);
     }
 
 
     public void save(Person person) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO person VALUES (1, ?, ?, ?)");
-            statement.setString(1, person.getName());
-            statement.setInt(2, person.getAge());
-            statement.setString(3, person.getEmail());
-            statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        jdbcTemplate.update("INSERT INTo person VALUES(1, ?, ?, ?)", person.getName(), person.getAge(), person.getEmail());
     }
 
     public void update(int id, Person person) {
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE person SET name=?, age=?, email=? WHERE id = ?");
-            preparedStatement.setString(1, person.getName());
-            preparedStatement.setInt(2, person.getAge());
-            preparedStatement.setString(3, person.getEmail());
-            preparedStatement.setInt(4, person.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        jdbcTemplate.update("UPDATE person SET name=?, age=?, email=? WHERE id=?", person.getName(), person.getAge(), person.getEmail(), id);
     }
 
     public void delete(int id) {
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("DELETE FROM person WHERE id = ?");
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-//        people.removeIf(person -> person.getId() == id);
+        jdbcTemplate.update("DELETE FROM person WHERE id = ?", id);
     }
 
 }
