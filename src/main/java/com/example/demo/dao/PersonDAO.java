@@ -22,27 +22,6 @@ public class PersonDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static int PEOPLE_COUNT = 0;
-
-    private static final String URL = "jdbc:postgresql://localhost:5432/first_db";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "1";
-
-    private static Connection connection;
-
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
 
     public List<Person> index() {
         return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
@@ -50,7 +29,6 @@ public class PersonDAO {
 
 
     public Person show(int id) {
-
        return jdbcTemplate.query("SELECT * FROM person WHERE id = ? LIMIT 1", new BeanPropertyRowMapper<>(Person.class), id)
                .stream()
                .findAny()
@@ -58,13 +36,23 @@ public class PersonDAO {
     }
 
 
-    public void save(Person person) {
-        jdbcTemplate.update("INSERT INTo person VALUES(1, ?, ?, ?)", person.getName(), person.getAge(), person.getEmail());
+    public Person show(String name) {
+        return jdbcTemplate.query("SELECT * FROM person WHERE name=?", new BeanPropertyRowMapper<>(Person.class), name)
+                .stream()
+                .findAny()
+                .orElse(null);
     }
 
-    public void update(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET name=?, age=?, email=? WHERE id=?", person.getName(), person.getAge(), person.getEmail(), id);
+
+    public void save(Person person) {
+        jdbcTemplate.update("INSERT INTO person(name, year) VALUES(?, ?)", person.getName(), person.getYear());
     }
+
+
+    public void update(int id, Person person) {
+        jdbcTemplate.update("UPDATE person SET name=?, year=? WHERE id=?", person.getName(), person.getYear(), id);
+    }
+
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM person WHERE id = ?", id);
