@@ -5,7 +5,7 @@
 </head>
 <body>
 <div th:each="person : ${people}">
-    <a th:href="@{/people/{id}/edit(id=${person.getId()})}" th:text="${person.getName() + ', ' + person.getYear() }">view</a>
+    <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName() + ', ' + person.getYear()}">view</a>
 </div>
 <hr />
 <a th:href="@{/people/new}" >Добавить нового читателя</a>

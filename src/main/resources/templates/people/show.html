@@ -4,7 +4,11 @@
     <title>Люди</title>
 </head>
 <body>
-    <h1 th:text="${person.getId()}"></h1>
-    <h2 th:text="${person.getName()}"></h2>
+    <p th:text="${'ID: ' + person.getId()}"></p>
+    <p th:text="${'Имя: ' + person.getName()}"></p>
+    <p th:text="${'Год рождения: ' + person.getYear()}"></p>
 </body>
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}"><button>Редактировать</button></a>
+<a th:href="@{/people/{id}/delete(id=${person.getId()})}"><button>Удалить</button></a>
+
 </html>
