@@ -4,9 +4,16 @@
     <title>Люди</title>
 </head>
 <body>
-    <p th:text="${'ID: ' + person.getId()}"></p>
-    <p th:text="${'Имя: ' + person.getName()}"></p>
-    <p th:text="${'Год рождения: ' + person.getYear()}"></p>
+    <p th:text="${person.getName() + ', ' + person.getYear()}"></p>
+    <hr />
+    <div th:if="${!books.isEmpty()}">
+        <b >Книги: <br/></b>
+        <div th:each="book : ${books}">
+            <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}"></p>
+        </div>
+        <hr />
+    </div>
+
 </body>
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}"><button>Редактировать</button></a>
 <a th:href="@{/people/{id}/delete(id=${person.getId()})}"><button>Удалить</button></a>

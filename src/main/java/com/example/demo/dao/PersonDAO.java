@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.models.Book;
 import com.example.demo.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -56,6 +57,11 @@ public class PersonDAO {
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM person WHERE id = ?", id);
+    }
+
+
+    public List<Book> getBooksByPerson(Person person) {
+        return jdbcTemplate.query("SELECT * FROM book WHERE person_id=?", new BeanPropertyRowMapper<>(Book.class), person.getId());
     }
 
 }

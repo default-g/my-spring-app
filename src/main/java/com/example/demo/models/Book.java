@@ -17,7 +17,6 @@ public class Book {
         this.name = name;
         this.author = author;
         this.year = year;
-        this.person = person;
     }
 
 
