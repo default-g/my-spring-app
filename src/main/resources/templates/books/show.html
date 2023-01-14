@@ -26,6 +26,8 @@
 
 </body>
 <a th:href="@{/books/{id}/edit(id=${book.getId()})}"><button>Редактировать</button></a>
-<a th:href="@{/books/{id}/delete(id=${book.getId()})}"><button>Удалить</button></a>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
+    <button type="submit">Удалить</button>
+</form>
 
 </html>
