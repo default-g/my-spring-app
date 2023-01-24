@@ -19,30 +19,36 @@ public class PersonDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Person> index() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("SELECT p FROM Person p", Person.class)
-                .getResultList();
+        return session.createQuery("SELECT p FROM Person p", Person.class).list();
     }
 
-
+    @Transactional(readOnly = true)
     public Person show(int id) {
-
-       return null;
+       return sessionFactory.getCurrentSession().get(Person.class, id);
     }
 
 
+    @Transactional
     public void save(Person person) {
-        ;
+        sessionFactory.getCurrentSession().persist(person);
     }
 
+    @Transactional
     public void update(int id, Person person) {
-         ;
+         Session session = sessionFactory.getCurrentSession();
+         Person personToUpdate = session.get(Person.class, id);
+         personToUpdate.setName(person.getName());
+         personToUpdate.setAge(person.getAge());
+         personToUpdate.setEmail(person.getEmail());
     }
 
+    @Transactional
     public void delete(int id) {
-
+        Session session = sessionFactory.getCurrentSession();
+        sessionFactory.getCurrentSession().remove(session.get(Person.class, id));
     }
 
 }
