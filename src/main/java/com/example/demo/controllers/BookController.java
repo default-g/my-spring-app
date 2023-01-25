@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -23,8 +25,22 @@ public class BookController {
     }
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("books", libraryService.getAllBooks());
+    public String index(Model model,
+                        @RequestParam(value = "page", required = false) Integer page,
+                        @RequestParam(value = "sort_by_year", required = false) Boolean sortByYear
+                        ) {
+        List<Book> bookList = null;
+        if (page != null) {
+            page--;
+            bookList = libraryService.getAllBooks(sortByYear != null ? sortByYear : false, page, 1);
+        }
+        if (page == null && sortByYear != null) {
+            bookList = libraryService.getAllBooks(sortByYear, 0, Integer.MAX_VALUE);
+        }
+        if (bookList == null) {
+            bookList = libraryService.getAllBooks();
+        }
+        model.addAttribute("books", bookList);
         return "books/index";
     }
 
@@ -45,7 +61,6 @@ public class BookController {
         Book book = libraryService.getBook(id);
         libraryService.assignBookToPerson(book, person);
         return "redirect:/books/" + id;
-
     }
 
 

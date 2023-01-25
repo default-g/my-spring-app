@@ -5,6 +5,9 @@ import com.example.demo.models.Person;
 import com.example.demo.repositories.BookRepository;
 import com.example.demo.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -113,4 +116,13 @@ public class LibraryService {
     public void deletePerson(Person person) {
         peopleRepository.delete(person);
     }
+
+
+    public List<Book> getAllBooks(boolean sortByYear, int page, int showPerPage) {
+        if (sortByYear) {
+            return bookRepository.findAll(PageRequest.of(page, showPerPage, Sort.by("year"))).getContent();
+        }
+        return bookRepository.findAll(PageRequest.of(page, showPerPage)).getContent();
+    }
+
 }
