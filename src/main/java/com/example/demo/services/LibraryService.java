@@ -84,4 +84,33 @@ public class LibraryService {
 
         bookRepository.save(bookToUpdate);
     }
+
+
+    public Person getPerson(int id) {
+        return peopleRepository.findById(id).orElse(null);
+    }
+
+
+    public void savePerson(Person person) {
+        peopleRepository.save(person);
+    }
+
+
+    public void updatePerson(int id, Person newPersonData) {
+        Person personToUpdate = peopleRepository.findById(id).orElse(null);
+
+        if (personToUpdate == null) {
+            return;
+        }
+
+        personToUpdate.setName(newPersonData.getName());
+        personToUpdate.setYear(newPersonData.getYear());
+
+        peopleRepository.save(personToUpdate);
+    }
+
+
+    public void deletePerson(Person person) {
+        peopleRepository.delete(person);
+    }
 }
