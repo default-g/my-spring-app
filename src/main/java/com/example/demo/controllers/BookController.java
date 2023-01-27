@@ -112,4 +112,16 @@ public class BookController {
         libraryService.updateBook(id, book);
         return "redirect:/books/" + id;
     }
+
+
+    @GetMapping("/search")
+    public String search(@RequestParam(required = false) String query, Model model) {
+        if (query == null) {
+            return "books/search";
+        }
+
+        model.addAttribute("query", query);
+        model.addAttribute("books", libraryService.getBooksBySearchQuery(query));
+        return "books/search";
+    }
 }

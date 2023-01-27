@@ -125,4 +125,13 @@ public class LibraryService {
         return bookRepository.findAll(PageRequest.of(page, showPerPage)).getContent();
     }
 
+
+    public List<Book> getBooksBySearchQuery(String query) {
+        if (query == null || query.length() == 0) {
+            return null;
+        }
+        query = "%" + query;
+        return bookRepository.findBookByNameIsLike(query);
+    }
+
 }

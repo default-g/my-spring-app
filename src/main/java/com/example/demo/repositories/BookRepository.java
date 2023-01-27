@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
     public List<Book> findByOwner(Person person);
+    public List<Book> findBookByNameIsLike(String name);
 }
 
