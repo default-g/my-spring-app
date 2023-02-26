@@ -25,6 +25,9 @@ public class Person {
     @Column(name="password")
     private String password;
 
+    @Column(name="role")
+    private String role;
+
     public Person() {};
 
     public Person(@NotEmpty(message = "Имя не должно быть пустым") @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов") String username, @Min(value = 1900, message = "Год рождения должен быть больше, чем 1900") int yearOfBirth, String password) {
@@ -63,6 +66,14 @@ public class Person {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override

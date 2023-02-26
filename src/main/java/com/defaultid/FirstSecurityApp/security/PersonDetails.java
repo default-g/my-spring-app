@@ -2,9 +2,11 @@ package com.defaultid.FirstSecurityApp.security;
 
 import com.defaultid.FirstSecurityApp.models.Person;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class PersonDetails implements UserDetails {
 
@@ -15,7 +17,7 @@ public class PersonDetails implements UserDetails {
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singleton(new SimpleGrantedAuthority(person.getRole()));
     }
 
     public String getPassword() {
